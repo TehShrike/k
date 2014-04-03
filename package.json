@@ -1,0 +1,24 @@
+{
+  "name": "k",
+  "version": "0.0.0",
+  "description": "Command-line Kanbanize interface",
+  "main": "index.js",
+  "scripts": {
+    "test": "tap test/*"
+  },
+  "keywords": [
+    "kanbanize",
+    "cli"
+  ],
+  "author": "TehShrike",
+  "license": "WTFPL",
+  "bin": {
+    "k": "./index.js"
+  },
+  "dependencies": {
+    "level": "~0.18.0",
+    "extend": "~1.2.1",
+    "superagent": "~0.17.0",
+    "cli-table": "~0.3.0"
+  }
+}
