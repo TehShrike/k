@@ -3,37 +3,30 @@ var path = require('path')
 
 var db = level(path.join(process.env.HOME, '.k'))
 
-function setter(name) {
-	return db.put.bind(db, name)
+module.exports = {
+	getterFactory: function getterFactory(name, encoding) {
+		return function(cb) {
+			db.get(name, {
+				encoding: encoding || 'utf8'
+			}, function(err, value) {
+				if (err) {
+					console.log(err.message)
+				} else if (typeof cb === 'function') {
+					cb(value)
+				} else {
+					console.log(value)
+				}
+			})
+		}
+	},
+	setterFactory: function setterFactory(name, encoding) {
+		return function set(value) {
+			db.put(name, value, {
+				encoding: encoding || 'utf8'
+			}, function(err) {
+				console.log(err || (name + " is now " + value))
+			})
+		}
+	},
+	db: db
 }
-
-function getter(name) {
-	return function(cb) {
-		db.get(name, function(err, value) {
-			if (err) {
-				console.log(err)
-			} else if (typeof cb === 'function') {
-				cb(value)
-			} else {
-				console.log(value)
-			}
-		})
-	}
-}
-
-function buildRoute() {
-	var route = {
-		set: {},
-		get: {}
-	}
-	var args = Array.prototype.slice.call(arguments)
-
-	args.forEach(function(name) {
-		route.set[name] = setter(name)
-		route.get[name] = getter(name)
-	})
-
-	return route
-}
-
-module.exports = buildRoute('key', 'domain', 'board', 'user')

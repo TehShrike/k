@@ -1,10 +1,11 @@
 #!/usr/local/bin/node
 
 var router = require('./router.js')
-var extend = require('extend')
 var api = require('./kanbanize_api.js')
-var Table = require('cli-table')
 var state = require('./state.js')
+var subtask = require('./subtask.js')
+var collapseArgs = require('./collapseArguments.js')
+var task = require('./task.js')
 
 function printArgs(name) {
 	return function() {
@@ -12,33 +13,12 @@ function printArgs(name) {
 	}
 }
 
-function collapseArgs(args, numberToIgnore) {
-	args = Array.prototype.slice.call(args)
-	if (typeof numberToIgnore === 'number') {
-		args = args.slice(numberToIgnore)
-	}
-	return args.join(" ")
-}
+var taskSetter = state.setterFactory('taskId')
 
-router(extend(true,
-	{
-		tasks: function() {
-			state.get.user(function(user) {
-				api('get_all_tasks', {}, function(tasks) {
-					var table = new Table({
-						head: ['id', 'Title']
-					})
-					tasks.filter(function(task) {
-						return task.assignee === user
-					}).forEach(function(task) {
-						table.push([ task.taskid, task.title ])
-					})
-					console.log(table.toString())
-				})
-			})
-		},
-		add:
-		function(template) {
+router({
+	tasks: require('./taskTable.js'),
+	add: {
+		task: function addTask(template) {
 			var taskTitle = collapseArgs(arguments, 1)
 			api('create_new_task', {
 				title: taskTitle,
@@ -46,7 +26,42 @@ router(extend(true,
 			}, function(res) {
 				console.log('Created task', res.id)
 			})
+		},
+		subtask: subtask.add
+	},
+	set: {
+		key: state.getterFactory('key'),
+		domain: state.getterFactory('domain'),
+		board: state.getterFactory('board'),
+		user: state.getterFactory('user')
+	},
+	get: {
+		key: state.setterFactory('key'),
+		domain: state.setterFactory('domain'),
+		board: state.setterFactory('board'),
+		user: state.setterFactory('user')
+	},
+	api: function(apiFunction) {
+		if (typeof apiFunction === 'string') {
+			api(apiFunction, {}, function(response) {
+				console.log(require('util').inspect(response, { depth: null, colors: true }))
+			})
 		}
 	},
-	require('./state.js')
-))
+	work: function(taskId) {
+		taskId = parseInt(taskId)
+
+		if (taskId > 0) {
+			taskSetter(taskId)
+		} else {
+			console.log("wat that's not a valid number c'mon")
+		}
+	},
+	subtasks: require('./subtaskTable.js'),
+	complete: subtask.complete,
+	move: {
+		right: task.moveRight,
+		left: task.moveLeft
+	},
+	current: state.getterFactory('taskId')
+})
