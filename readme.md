@@ -7,7 +7,7 @@ What are my frequent operations, you ask?  Well, let me tell you!
 - I check things off of those checklists
 - I move tasks to other columns (hopefully to the right) when appropriate
 
-Other people will likely have other workflows than me.  For now, this software represents my normal interactions with Kanbanize - but it could represent yours too!  Pull requests or issues or whatever are welcome.  If you hate or have otherwise strong emotions about the app, [make sure to tell me on Twitter](https://twitter.com/TehShrike).
+Other people will likely have other workflows than me.  For now, this software represents my normal interactions with Kanbanize - but it could represent yours too!  Pull requests or issues or whatever are welcome.  If you hate or have otherwise strong emotions about the app, [be sure to tell me on Twitter](https://twitter.com/TehShrike).
 
 # Install
 
