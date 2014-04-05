@@ -1,5 +1,7 @@
 var level = require('level')
 var path = require('path')
+var ASQ = require('asynquence')
+var collapseArgs = require('./collapse_arguments.js')
 
 var db = level(path.join(process.env.HOME, '.k'))
 
@@ -20,13 +22,30 @@ module.exports = {
 		}
 	},
 	setterFactory: function setterFactory(name, encoding) {
-		return function set(value) {
+		return function set() {
+			var value = collapseArgs(arguments)
 			db.put(name, value, {
 				encoding: encoding || 'utf8'
 			}, function(err) {
 				console.log(err || (name + " is now " + value))
 			})
 		}
+	},
+	fetchAll: function fetchAll(names, cb) {
+		var getterFunctions = names.map(function(name) {
+			return function(done) {
+				db.get(name, done.errfcb)
+			}
+		})
+
+		var asq = ASQ()
+
+		asq.gate.apply(asq, getterFunctions).then(function() {
+			var args = [].slice.call(arguments, 1)
+			cb.apply(null, args)
+		}).or(function(err) {
+			console.log(err.message)
+		})
 	},
 	db: db
 }

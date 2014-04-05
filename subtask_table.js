@@ -5,8 +5,8 @@ var Table = require('cli-table')
 
 var taskGetter = state.getterFactory('taskId')
 
-module.exports = function displayTaskTable() {
-	taskGetter(function(taskId) {
+module.exports = function displayTaskTable(taskId) {
+	if (typeof taskId === 'string') {
 		api('get_task_details', {
 			taskid: taskId
 		}, function(task) {
@@ -20,5 +20,7 @@ module.exports = function displayTaskTable() {
 			})
 			console.log(table.toString())
 		})
-	})
+	} else {
+		taskGetter(displayTaskTable)
+	}
 }

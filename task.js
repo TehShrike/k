@@ -1,7 +1,7 @@
 var api = require('./kanbanize_api.js')
 var state = require('./state.js')
 var api = require('./kanbanize_api.js')
-var boardColumns = require('./boardColumns.js')
+var boardColumns = require('./board_columns.js')
 
 var taskIdGetter = state.getterFactory('taskId')
 
@@ -18,7 +18,7 @@ function moveToColumn(columnDelta, taskId) {
 				api('move_task', {
 					taskid: taskId,
 					column: columnName
-				}, require('./taskTable.js'))
+				}, require('./task_table.js'))
 			})
 		})
 	}

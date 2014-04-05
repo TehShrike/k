@@ -1,25 +1,20 @@
 var api = require('./kanbanize_api.js')
 var state = require('./state.js')
 var api = require('./kanbanize_api.js')
-var collapseArgs = require('./collapseArguments.js')
-var subtaskTable = require('./subtaskTable.js')
-
-var taskIdGetter = state.getterFactory('taskId')
-var userGetter = state.getterFactory('user')
+var collapseArgs = require('./collapse_arguments.js')
+var subtaskTable = require('./subtask_table.js')
 
 module.exports = {
 	add: function addSubtask() {
 		var title = collapseArgs(arguments)
-		taskIdGetter(function(taskId) {
-			userGetter(function(user) {
-				api('add_subtask', {
-					taskparent: taskId,
-					title: title,
-					assignee: user
-				}, function(response) {
-					console.log("Created subtask", response)
-					subtaskTable()
-				})
+		state.fetchAll(['taskId', 'user'], function(taskId, user) {
+			api('add_subtask', {
+				taskparent: taskId,
+				title: title,
+				assignee: user
+			}, function(response) {
+				console.log("Created subtask", response)
+				subtaskTable()
 			})
 		})
 	},

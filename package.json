@@ -1,10 +1,16 @@
 {
   "name": "kanbanize-cli",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Command-line Kanbanize interface",
   "main": "index.js",
   "scripts": {
     "test": "tap test/*"
+  },
+  "homepage": "https://github.com/TehShrike/k",
+  "bugs": "https://github.com/TehShrike/k/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TehShrike/k.git"
   },
   "keywords": [
     "kanbanize",
@@ -19,6 +25,8 @@
     "level": "~0.18.0",
     "extend": "~1.2.1",
     "superagent": "~0.17.0",
-    "cli-table": "~0.3.0"
+    "cli-table": "~0.3.0",
+    "bash-color": "0.0.3",
+    "asynquence": "~0.3.4-e"
   }
 }
