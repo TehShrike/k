@@ -3,8 +3,6 @@ var resolveUrl = require('url').resolve
 var extend = require('extend')
 var state = require('./state.js')
 
-var domainGetter = state.getterFactory('domain')
-
 function resolveAll() {
 	var args = Array.prototype.slice.call(arguments)
 	return args.reduce(function(a, b) {
@@ -15,8 +13,8 @@ function resolveAll() {
 	})
 }
 
-function makeRequest(domain, apiFunction, body, cb) {
-	state.fetchAll(['key', 'board'], function(apiKey, boardId) {
+module.exports = function makeRequest(apiFunction, body, cb) {
+	state.fetchAll(['domain', 'key', 'board'], function(domain, apiKey, boardId) {
 		var url = resolveAll("http://" + domain + "/index.php/api/kanbanize/", apiFunction, 'boardid', boardId, "format/json")
 		request
 			.post(url)
@@ -33,11 +31,5 @@ function makeRequest(domain, apiFunction, body, cb) {
 					}
 				}
 			})
-	})
-}
-
-module.exports = function(apiFunction, body, cb) {
-	domainGetter(function(domain) {
-		makeRequest(domain, apiFunction, body, cb)
 	})
 }
