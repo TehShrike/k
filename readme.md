@@ -24,6 +24,8 @@ If you want to check the current value of any of the settings above, you can see
 
 `k tasks`
 
+![k tasks](images/tasks.png)
+
 ## Add a task
 
 `k task [template name] [task title]`
@@ -39,6 +41,8 @@ See whatever task id you previously selected by typing `k current`, or just look
 ## View subtasks
 
 `k subtasks [OPTIONAL task id]`
+
+![k subtasks](images/subtasks.png)
 
 If you don't type in the task id, subtasks will be shown for whatever task you said you were working.
 
