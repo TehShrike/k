@@ -1,5 +1,14 @@
 A cli for Kanbanize, so I don't have to go use the web UI for frequent operations.
 
+What are my frequent operations, you ask?  Well, let me tell you!
+
+- I look at the tasks assigned to me, and see which column they're in
+- I add to the checklists of my tasks
+- I check things off of those checklists
+- I move tasks to other columns (hopefully to the right) when appropriate
+
+Other people will likely have other workflows than me.  For now, this software represents my normal interactions with Kanbanize - but it could represent yours too!  Pull requests or issues or whatever are welcome.  If you hate or have otherwise strong emotions about the app, [make sure to tell me on Twitter](https://twitter.com/TehShrike).
+
 # Install
 
 Install [node.js](http://nodejs.org/download/) if it's not already on your machine, and then run
@@ -67,3 +76,9 @@ If you don't type in the task id, subtasks will be shown for whatever task you s
 `k api [api function] [header1 value1 [header2 value2 ...]]`
 
 Run any of the [Kanbanize API functions](https://kanbanize.com/ctrl_integration) you like and view the resulting JSON.  Your API key and the current board id will be automatically passed in to every call.
+
+# License
+
+[WTFPL](http://wtfpl2.com/)
+
+So, you know, do whatever you want!  Which is what you would have done anyway, unless I seemed like a guy who could afford lots of lawyers.  (I'm not)
