@@ -2,7 +2,11 @@ A cli for Kanbanize, so I don't have to go use the web UI for frequent operation
 
 # Install
 
+Install [node.js](http://nodejs.org/download/) if it's not already on your machine, and then run
+
 	sudo npm install -g kanbanize-cli
+
+(you'll obviously want to skip the sudo if you're on Windows)
 
 # Set up
 
