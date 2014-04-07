@@ -11,7 +11,8 @@ module.exports = function displayTaskTable(taskId) {
 			taskid: taskId
 		}, function(task) {
 			var table = new Table({
-				head: ['Done', 'Title', 'id']
+				head: ['Done', 'Title', 'id'],
+				colWidths: [6, 140, 8]
 			})
 			task.subtaskdetails.map(function(subtask) {
 				return [ subtask.completiondate === null ? '' : 'X', subtask.title, subtask.taskid ]
