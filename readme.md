@@ -41,7 +41,7 @@ If you want to check the current value of any of the settings above, you can see
 
 ## Add a task
 
-`k task [template name] [task title]`
+`k add task [template name] [task title]`
 
 New tasks go into the backlog.  The template name is case sensitive.
 

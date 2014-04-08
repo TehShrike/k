@@ -1,11 +1,30 @@
 #!/usr/local/bin/node
 
-var router = require('./router.js')
+var router = require('lieutenant')
 var api = require('./kanbanize_api.js')
 var state = require('./state.js')
 var subtask = require('./subtask.js')
 var collapseArgs = require('./collapse_arguments.js')
 var task = require('./task.js')
+
+function badRoute() {
+	console.log("k tasks")
+	console.log("k work [task id]")
+	console.log("k subtasks [OPTIONAL task id]")
+	console.log("k add task [template name] [task title]")
+	console.log("k add subtask [subtask title]")
+	console.log("k complete [subtask id]")
+	console.log("k move [left|right] [OPTIONAL taskid]")
+	console.log("k api [api function] [header1 value1 [header2 value2 ...]]")
+	console.log("-----------")
+	console.log("k set key [api key]")
+	console.log("k set domain [domain name]")
+	console.log("k set board [board id]")
+	console.log("k set user [username]")
+	console.log("k set columns [column names]")
+	console.log("-----------")
+	console.log("k api [api function]")
+}
 
 function printArgs(name) {
 	return function() {
@@ -74,6 +93,5 @@ router({
 	move: {
 		right: task.moveRight,
 		left: task.moveLeft
-	},
-	current: state.getterFactory('taskId')
-})
+	}
+}, badRoute)

@@ -66,17 +66,23 @@ function displayAllTasks(user, taskId, columnsICareAbout) {
 	})
 }
 
+var taskGetter = state.getterFactory('taskId')
+
 module.exports = function displayTaskTable() {
-	state.fetchAll(['user', 'taskId', 'columns'], function(user, taskId, columns) {
-		if (columns === 'all') {
-			boardColumns.get(function(columns) {
+	state.fetchAll(['user', 'columns'], function(user, columns) {
+		state.db.get('taskId', function(err, taskId) {
+			taskId = err ? null : taskId
+
+			if (columns === 'all') {
+				boardColumns.get(function(columns) {
+					displayAllTasks(user, taskId, columns)
+				})
+			} else {
+				columns = columns.split(',').map(function(column) {
+					return column.trim()
+				})
 				displayAllTasks(user, taskId, columns)
-			})
-		} else {
-			columns = columns.split(',').map(function(column) {
-				return column.trim()
-			})
-			displayAllTasks(user, taskId, columns)
-		}
+			}
+		})
 	})
 }

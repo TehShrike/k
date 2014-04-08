@@ -1,6 +1,6 @@
 {
   "name": "kanbanize-cli",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Command-line Kanbanize interface",
   "main": "index.js",
   "scripts": {
@@ -27,6 +27,7 @@
     "superagent": "~0.17.0",
     "cli-table": "~0.3.0",
     "bash-color": "0.0.3",
-    "asynquence": "~0.3.4-e"
+    "asynquence": "~0.3.4-e",
+    "lieutenant": "~1.0.1"
   }
 }
