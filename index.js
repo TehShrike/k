@@ -16,6 +16,8 @@ function badRoute() {
 	console.log("k complete [subtask id]")
 	console.log("k move [left|right] [OPTIONAL taskid]")
 	console.log("k api [api function] [header1 value1 [header2 value2 ...]]")
+	console.log("k block [reason]")
+	console.log("k unblock")
 	console.log("-----------")
 	console.log("k set key [api key]")
 	console.log("k set domain [domain name]")
@@ -33,6 +35,7 @@ function printArgs(name) {
 }
 
 var taskSetter = state.setterFactory('taskId')
+var taskGetter = state.getterFactory('taskId')
 
 router({
 	tasks: require('./task_table.js'),
@@ -93,5 +96,28 @@ router({
 	move: {
 		right: task.moveRight,
 		left: task.moveLeft
+	},
+	block: function() {
+		var reason = collapseArgs(arguments)
+		
+		taskGetter(function(taskId) {
+			api('block_task', {
+				taskid: taskId,
+				event: 'block',
+				blockreason: reason
+			}, function() {
+				console.log("Task", taskId, "blocked:", reason)
+			})
+		})
+	},
+	unblock: function() {
+		taskGetter(function(taskId) {
+			api('block_task', {
+				taskid: taskId,
+				event: 'unblock'
+			}, function() {
+				console.log("Task", taskId, "unblocked")
+			})
+		})		
 	}
 }, badRoute)
