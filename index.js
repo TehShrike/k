@@ -6,10 +6,12 @@ var state = require('./state.js')
 var subtask = require('./subtask.js')
 var collapseArgs = require('./collapse_arguments.js')
 var task = require('./task.js')
+var editor = require('./editor.js')
 
 function badRoute() {
 	console.log("k tasks")
 	console.log("k work [task id]")
+	console.log("k description")
 	console.log("k subtasks [OPTIONAL task id]")
 	console.log("k add task [template name] [task title]")
 	console.log("k add subtask [subtask title]")
@@ -24,6 +26,7 @@ function badRoute() {
 	console.log("k set board [board id]")
 	console.log("k set user [username]")
 	console.log("k set columns [column names]")
+	console.log("k set editor [path to editor]")
 	console.log("-----------")
 	console.log("k api [api function]")
 }
@@ -52,6 +55,7 @@ router({
 		subtask: subtask.add
 	},
 	set: {
+		editor: state.setterFactory('editor'),
 		key: state.setterFactory('key'),
 		domain: state.setterFactory('domain'),
 		board: state.setterFactory('board'),
@@ -59,6 +63,7 @@ router({
 		columns: state.setterFactory('columns')
 	},
 	get: {
+		editor: state.getterFactory('editor'),
 		key: state.getterFactory('key'),
 		domain: state.getterFactory('domain'),
 		board: state.getterFactory('board'),
@@ -99,7 +104,7 @@ router({
 	},
 	block: function() {
 		var reason = collapseArgs(arguments)
-		
+
 		taskGetter(function(taskId) {
 			api('block_task', {
 				taskid: taskId,
@@ -118,6 +123,21 @@ router({
 			}, function() {
 				console.log("Task", taskId, "unblocked")
 			})
-		})		
+		})
+	},
+	description: function() {
+		taskGetter(function(taskId) {
+			api('get_task_details', {
+				textformat: 'plain',
+				taskid: taskId
+			}, function(task) {
+				editor(task.description, function(newDescription) {
+					api('edit_task', {
+						taskid: taskId,
+						description: newDescription
+					})
+				})
+			})
+		})
 	}
 }, badRoute)
