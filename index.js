@@ -7,14 +7,17 @@ var subtask = require('./subtask.js')
 var collapseArgs = require('./collapse_arguments.js')
 var task = require('./task.js')
 var editor = require('./editor.js')
+var comment = require('./comment.js')
 
 function badRoute() {
 	console.log("k tasks")
 	console.log("k work [task id]")
+	console.log("k current")
 	console.log("k description")
 	console.log("k subtasks [OPTIONAL task id]")
 	console.log("k add task [template name] [task title]")
 	console.log("k add subtask [subtask title]")
+	console.log("k add comment [OPTIONAL comment]")
 	console.log("k complete [subtask id]")
 	console.log("k move [left|right] [OPTIONAL taskid]")
 	console.log("k api [api function] [header1 value1 [header2 value2 ...]]")
@@ -52,7 +55,15 @@ router({
 				console.log('Created task', res.id)
 			})
 		},
-		subtask: subtask.add
+		subtask: subtask.add,
+		comment: function addComment() {
+			var newComment = collapseArgs(arguments)
+			if (newComment.length === 0) {
+				editor(comment.add)
+			} else {
+				comment.add(newComment)
+			}
+		}
 	},
 	set: {
 		editor: state.setterFactory('editor'),
@@ -96,7 +107,7 @@ router({
 			console.log("wat that's not a valid number c'mon")
 		}
 	},
-	subtasks: require('./subtask_table.js'),
+	subtasks: subtask.getAndDisplayTable,
 	complete: subtask.complete,
 	move: {
 		right: task.moveRight,
@@ -139,5 +150,37 @@ router({
 				})
 			})
 		})
+	},
+	current: function() {
+		taskGetter(function(taskId) {
+			api('get_task_details', {
+				taskid: taskId,
+				textformat: 'plain',
+				history: 'yes',
+				event: 'comment'
+			}, function(task) {
+				var color = require('bash-color')
+				var current = task.taskid == taskId
+				var bug = task.type === 'Bug'
+
+				var title = bug ? color.red(task.title) : task.title
+				var taskid = current ? color.cyan(task.taskid) : task.taskid
+				var text = taskid + ": " + title
+
+				var separator = color.blue('--------------------')
+
+				console.log(separator)
+				console.log(text)
+				console.log(separator)
+				console.log(task.description)
+				console.log(separator)
+				task.historydetails.forEach(function(comment) {
+					console.log(comment.author + ":", comment.details)
+				})
+				console.log(separator)
+				subtask.table(task)
+			})
+		})
+
 	}
 }, badRoute)

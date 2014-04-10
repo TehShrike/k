@@ -22,7 +22,9 @@ function editFile(filename, cb) {
 module.exports = function edit(text, cb) {
 	var filename = '/tmp/' + Math.round(Math.random() * 100000000)
 
-	if (typeof text === 'string') {
+	if (typeof text === 'function') {
+		cb = text
+	} else {
 		fs.writeFileSync(filename, text)
 	}
 
