@@ -8,6 +8,7 @@ var collapseArgs = require('./collapse_arguments.js')
 var task = require('./task.js')
 var editor = require('./editor.js')
 var comment = require('./comment.js')
+var Table = require('cli-table')
 
 function badRoute() {
 	console.log("k tasks")
@@ -38,6 +39,24 @@ function printArgs(name) {
 	return function() {
 		console.log(name, "called with", arguments)
 	}
+}
+
+function wrap(text, chars) {
+	var lines = text.split('\n')
+	return lines.map(function(line) {
+		var shortenedLines = []
+		while (line.length > chars) {
+			var shortened = line.substr(0, chars)
+			line = line.substr(chars)
+			shortenedLines.push(shortened)
+		}
+		shortenedLines.push(line)
+		return shortenedLines
+	}).map(function joinWithNewline(ary) {
+		return ary.join('\n')
+	}).reduce(function(a, b) {
+		return a + '\n' + b
+	})
 }
 
 var taskSetter = state.setterFactory('taskId')
@@ -160,24 +179,23 @@ router({
 				event: 'comment'
 			}, function(task) {
 				var color = require('bash-color')
-				var current = task.taskid == taskId
 				var bug = task.type === 'Bug'
 
 				var title = bug ? color.red(task.title) : task.title
-				var taskid = current ? color.cyan(task.taskid) : task.taskid
-				var text = taskid + ": " + title
+				var taskid = color.cyan(task.taskid)
 
-				var separator = color.blue('--------------------')
-
-				console.log(separator)
-				console.log(text)
-				console.log(separator)
-				console.log(task.description)
-				console.log(separator)
-				task.historydetails.forEach(function(comment) {
-					console.log(comment.author + ":", comment.details)
+				var table = new Table({
+					head: [taskid, title],
+					colWidths: [11, 144]
 				})
-				console.log(separator)
+
+				table.push(['', wrap(task.description, 140)])
+
+				task.historydetails.forEach(function(comment) {
+					table.push([comment.author, wrap(comment.details, 140) ])
+				})
+
+				console.log(table.toString())
 				subtask.table(task)
 			})
 		})
