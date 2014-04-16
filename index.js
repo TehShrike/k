@@ -100,6 +100,11 @@ router({
 		user: state.getterFactory('user'),
 		columns: state.getterFactory('columns')
 	},
+	clear: {
+		board: function() {
+			state.db.del('boardColumns')
+		}
+	},
 	api: function(apiFunction) {
 		if (typeof apiFunction === 'string') {
 			var args = Array.prototype.slice.call(arguments)
