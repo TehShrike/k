@@ -194,9 +194,11 @@ router({
 					colWidths: [11, 144]
 				})
 
-				table.push(['', wrap(task.description, 140)])
+				if (task.description) {
+					table.push(['', wrap(task.description, 140)])
+				}
 
-				task.historydetails.forEach(function(comment) {
+				task.historydetails.reverse().forEach(function(comment) {
 					table.push([comment.author, wrap(comment.details, 140) ])
 				})
 
