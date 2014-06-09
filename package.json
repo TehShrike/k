@@ -1,6 +1,6 @@
 {
   "name": "kanbanize-cli",
-  "version": "0.3.2",
+  "version": "1.0.0",
   "description": "Command-line Kanbanize interface",
   "main": "index.js",
   "scripts": {
