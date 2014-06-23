@@ -46,8 +46,13 @@ function wrap(text, chars) {
 	return lines.map(function(line) {
 		var shortenedLines = []
 		while (line.length > chars) {
-			var shortened = line.substr(0, chars)
-			line = line.substr(chars)
+			var trimAt = line.lastIndexOf(' ', chars)
+			if (trimAt == -1) {
+				trimAt = chars
+			}
+			var shortened = line.substr(0, trimAt)
+			var pickUpAt = line.indexOf
+			line = line.substr(trimAt).trimLeft()
 			shortenedLines.push(shortened)
 		}
 		shortenedLines.push(line)
