@@ -1,6 +1,7 @@
 var fs = require('fs')
 var cp = require('child_process')
 var state = require('./state.js')
+var os = require('os')
 
 var getEditor = state.getterFactory('editor')
 
@@ -20,7 +21,7 @@ function editFile(filename, cb) {
 }
 
 module.exports = function edit(text, cb) {
-	var filename = '/tmp/' + Math.round(Math.random() * 100000000)
+	var filename = os.tmpdir() + Math.round(Math.random() * 100000000)
 
 	if (typeof text === 'function') {
 		cb = text
