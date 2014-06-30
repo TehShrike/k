@@ -29,9 +29,13 @@ Install [node.js](http://nodejs.org/download/) if it's not already on your machi
 
 `k set columns [column names]`  A comma-separated list of column names from the board.  Case sensitive.  Only tasks in these columns will be displayed.  If you want to try to fit all the columns in your terminal, set to "all".
 
+`k set editor [editor]`  Your favorite terminal editor for editing task descriptions or adding long comments.  Example: `k set editor vim`
+
 If you want to check the current value of any of the settings above, you can see it by typing `k get [setting name]`.
 
 # Usage
+
+To refresh your memory on usage from the command-line, just run `k` and it will echo out the cheat sheet.
 
 ## View your tasks
 
@@ -49,7 +53,19 @@ New tasks go into the backlog.  The template name is case sensitive.
 
 `k work [task id]`
 
-See whatever task id you previously selected by typing `k current`, or just look for the blue task id when viewing the task list.
+Sets the "current" task being worked.  This task id will be used for all other task-specific commands when you don't specify the task id manually.
+
+## View task details
+
+`k details [OPTIONAL task id]`
+
+Spits out the task description, all comments, and all subtasks.
+
+## Edit the task description
+
+`k description [OPTIONAL task id]`
+
+Opens your selected editor to make changes to the description.  Text-only, any HTML styling previously on the task will be lost.
 
 ## View subtasks
 
@@ -67,9 +83,21 @@ If you don't type in the task id, subtasks will be shown for whatever task you s
 
 `k complete [subtask id]`
 
+## Add a comment
+
+`k add comment [OPTIONAL comment]`
+
+If you don't type in the comment text on the command-line, your editor will open and whatever you save there will be added as a new comment on the task.
+
 ## Move a task to a different column
 
 `k move [left|right] [OPTIONAL taskid]`
+
+## Block or unblock a task
+
+`k block [reason]`
+
+`k unblock [OPTIONAL task id]`
 
 ## Run arbitrary functions against the API
 

@@ -13,8 +13,8 @@ var Table = require('cli-table')
 function badRoute() {
 	console.log("k tasks")
 	console.log("k work [task id]")
-	console.log("k current")
-	console.log("k description")
+	console.log("k details [OPTIONAL task id]")
+	console.log("k description [OPTIONAL task id]")
 	console.log("k subtasks [OPTIONAL task id]")
 	console.log("k add task [template name] [task title]")
 	console.log("k add subtask [subtask title]")
@@ -23,7 +23,7 @@ function badRoute() {
 	console.log("k move [left|right] [OPTIONAL taskid]")
 	console.log("k api [api function] [header1 value1 [header2 value2 ...]]")
 	console.log("k block [reason]")
-	console.log("k unblock")
+	console.log("k unblock [OPTIONAL task id]")
 	console.log("-----------")
 	console.log("k set key [api key]")
 	console.log("k set domain [domain name]")
@@ -38,6 +38,16 @@ function badRoute() {
 function printArgs(name) {
 	return function() {
 		console.log(name, "called with", arguments)
+	}
+}
+
+function optionalTaskId(cb) {
+	return function(inputTaskId) {
+		if (parseInt(inputTaskId)) {
+			process.nextTick(cb.bind(null, inputTaskId))
+		} else {
+			taskGetter(cb)
+		}
 	}
 }
 
@@ -155,62 +165,55 @@ router({
 			})
 		})
 	},
-	unblock: function() {
-		taskGetter(function(taskId) {
-			api('block_task', {
-				taskid: taskId,
-				event: 'unblock'
-			}, function() {
-				console.log("Task", taskId, "unblocked")
-			})
+	unblock: optionalTaskId(function(taskId) {
+		api('block_task', {
+			taskid: taskId,
+			event: 'unblock'
+		}, function() {
+			console.log("Task", taskId, "unblocked")
 		})
-	},
-	description: function() {
-		taskGetter(function(taskId) {
-			api('get_task_details', {
-				textformat: 'plain',
-				taskid: taskId
-			}, function(task) {
-				editor(task.description, function(newDescription) {
-					api('edit_task', {
-						taskid: taskId,
-						description: newDescription
-					})
+	}),
+	description: optionalTaskId(function(taskId) {
+		api('get_task_details', {
+			textformat: 'plain',
+			taskid: taskId
+		}, function(task) {
+			editor(task.description, function(newDescription) {
+				api('edit_task', {
+					taskid: taskId,
+					description: newDescription
 				})
 			})
 		})
-	},
-	current: function() {
-		taskGetter(function(taskId) {
-			api('get_task_details', {
-				taskid: taskId,
-				textformat: 'plain',
-				history: 'yes',
-				event: 'comment'
-			}, function(task) {
-				var color = require('bash-color')
-				var bug = task.type === 'Bug'
+	}),
+	details: optionalTaskId(function(taskId) {
+		api('get_task_details', {
+			taskid: taskId,
+			textformat: 'plain',
+			history: 'yes',
+			event: 'comment'
+		}, function(task) {
+			var color = require('bash-color')
+			var bug = task.type === 'Bug'
 
-				var title = bug ? color.red(task.title) : task.title
-				var taskid = color.cyan(task.taskid)
+			var title = bug ? color.red(task.title) : task.title
+			var taskid = color.cyan(task.taskid)
 
-				var table = new Table({
-					head: [taskid, title],
-					colWidths: [11, 144]
-				})
-
-				if (task.description) {
-					table.push(['', wrap(task.description, 140)])
-				}
-
-				task.historydetails.reverse().forEach(function(comment) {
-					table.push([comment.author, wrap(comment.details, 140) ])
-				})
-
-				console.log(table.toString())
-				subtask.table(task)
+			var table = new Table({
+				head: [taskid, title],
+				colWidths: [11, 144]
 			})
-		})
 
-	}
+			if (task.description) {
+				table.push(['', wrap(task.description, 140)])
+			}
+
+			task.historydetails.reverse().forEach(function(comment) {
+				table.push([comment.author, wrap(comment.details, 140) ])
+			})
+
+			console.log(table.toString())
+			subtask.table(task)
+		})
+	})
 }, badRoute)
