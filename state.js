@@ -23,7 +23,7 @@ module.exports = {
 	},
 	setterFactory: function setterFactory(name, encoding) {
 		return function set() {
-			var value = collapseArgs(arguments)
+			var value = encoding ? arguments[0] : collapseArgs(arguments)
 			db.put(name, value, {
 				encoding: encoding || 'utf8'
 			}, function(err) {
