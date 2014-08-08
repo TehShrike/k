@@ -2,6 +2,7 @@ var state = require('./state.js')
 var api = require('./kanbanize_api.js')
 
 var columnsSetter = state.setterFactory('boardColumns', 'json')
+var alreadyFetchedBoardsOnceThisRun = false
 
 function getBoardsFromApi(cb) {
 	api('get_board_structure', {}, function(response) {
@@ -29,9 +30,15 @@ function fetchColumnsIfNecessary(cb) {
 }
 
 function getColumnNextTo(indexDelta, columnName, cb) {
-	fetchColumnsIfNecessary(function(columns) {
+	fetchColumnsIfNecessary(function columnCallback(columns) {
 		var index = columns.indexOf(columnName)
-		cb(index == -1 ? null : columns[index + indexDelta])
+
+		if (index === -1 && !alreadyFetchedBoardsOnceThisRun) {
+			alreadyFetchedBoardsOnceThisRun = true
+			getBoardsFromApi(columnCallback)
+		} else {
+			cb(index == -1 ? null : columns[index + indexDelta])
+		}
 	})
 }
 
