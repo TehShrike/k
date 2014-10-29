@@ -1,4 +1,4 @@
-#!/usr/local/bin/node
+#!/usr/bin/env node
 
 var router = require('lieutenant')
 var api = require('./kanbanize_api.js')
