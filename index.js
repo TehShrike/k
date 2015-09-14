@@ -8,6 +8,7 @@ var collapseArgs = require('./collapse_arguments.js')
 var task = require('./task.js')
 var editor = require('./editor.js')
 var comment = require('./comment.js')
+var displayTaskTable = require('./task_table.js')
 var Table = require('cli-table')
 
 function badRoute() {
@@ -78,7 +79,10 @@ var taskSetter = state.setterFactory('taskId')
 var taskGetter = state.getterFactory('taskId')
 
 router({
-	tasks: require('./task_table.js'),
+	tasks: {
+		all: displayTaskTable.all,
+		default: displayTaskTable
+	},
 	add: {
 		task: function addTask(template) {
 			var taskTitle = collapseArgs(arguments, 1)
