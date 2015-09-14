@@ -4,7 +4,7 @@
   "description": "Command-line Kanbanize interface",
   "main": "index.js",
   "scripts": {
-    "test": "tap test/*"
+    "test": "echo 'No tests :-o'"
   },
   "homepage": "https://github.com/TehShrike/k",
   "bugs": "https://github.com/TehShrike/k/issues",
