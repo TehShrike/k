@@ -25,7 +25,7 @@ Install [node.js](http://nodejs.org/download/) if it's not already on your machi
 
 `k set board [board id]`  The board you want to interact with.  You can get this from the dashboard, by mousing-over the right side of the list of boards, or you can just grab it from the url when you open up the board.
 
-`k set user [username]`  Your username.  Case sensitive.  This is used to filter down tasks so that you'll just see the ones that are assigned to you.  If you want to see all jobs, set to "all".
+`k set user [username]`  Your username.  Case sensitive.  This is used to filter down tasks so that you'll just see the ones that are assigned to you.
 
 `k set columns [column names]`  A comma-separated list of column names from the board.  Case sensitive.  Only tasks in these columns will be displayed.  If you want to try to fit all the columns in your terminal, set to "all".
 
@@ -43,6 +43,10 @@ To refresh your memory on usage from the command-line, just run `k` and it will 
 
 ![k tasks](images/tasks.png)
 
+`k tasks all`
+
+Shows you all tasks, even the ones that aren't assigned to you.
+
 ## Add a task
 
 `k add task [template name] [task title]`
@@ -53,7 +57,9 @@ New tasks go into the backlog.  The template name is case sensitive.
 
 `k work [task id]`
 
-Sets the "current" task being worked.  This task id will be used for all other task-specific commands when you don't specify the task id manually.
+Sets the "current" task being worked, and sets the task to be assigned to you.
+
+This task id will be used for all other task-specific commands when you don't specify the task id manually.
 
 ## View task details
 

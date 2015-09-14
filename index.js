@@ -13,6 +13,7 @@ var Table = require('cli-table')
 
 function badRoute() {
 	console.log("k tasks")
+	console.log("k tasks all")
 	console.log("k work [task id]")
 	console.log("k details [OPTIONAL task id]")
 	console.log("k description [OPTIONAL task id]")
@@ -146,6 +147,17 @@ router({
 
 		if (taskId > 0) {
 			taskSetter(taskId)
+			state.fetchAll(['board', 'user'], function(boardId, user) {
+				if (user && user !== 'all') {
+					api('edit_task', {
+						taskid: taskId,
+						boardid: boardId,
+						assignee: user
+					}, function() {
+						console.log('Task', taskId, 'has been assigned to you')
+					})
+				}
+			})
 		} else {
 			console.log("wat that's not a valid number c'mon")
 		}
