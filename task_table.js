@@ -26,12 +26,16 @@ function ColumnularTable(headers) {
 				return (largestSoFar > bucketSize) ? largestSoFar : bucketSize
 			})
 
+			function headerToBucket(headerName) {
+				return buckets[headerName]
+			}
+
+			function bucketToColumnValue(bucket) {
+				return bucket[i] || ''
+			}
+
 			for (var i = 0; i < rowCount; ++i) {
-				var newRow = headers.map(function headerToBucket(headerName) {
-					return buckets[headerName]
-				}).map(function bucketToColumnValue(bucket) {
-					return bucket[i] || ''
-				})
+				var newRow = headers.map(headerToBucket).map(bucketToColumnValue)
 
 				table.push(newRow)
 			}
@@ -65,8 +69,6 @@ function displayAllTasks(user, taskId, columnsICareAbout) {
 		console.log(table.build())
 	})
 }
-
-var taskGetter = state.getterFactory('taskId')
 
 function displayTaskTable(user, columns) {
 	state.db.get('taskId', function(err, taskId) {
