@@ -18,7 +18,7 @@ function getBoardsFromApi(cb) {
 }
 
 function fetchColumnsIfNecessary(cb) {
-	state.db.get('boardColumns', { encoding: 'json' }, function(err, columns) {
+	state.db.get('boardColumns', { valueEncoding: 'json' }, function(err, columns) {
 		if (err && err.notFound) {
 			getBoardsFromApi(cb)
 		} else if (err) {

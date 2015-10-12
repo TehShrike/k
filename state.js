@@ -9,7 +9,7 @@ module.exports = {
 	getterFactory: function getterFactory(name, encoding) {
 		return function(cb) {
 			db.get(name, {
-				encoding: encoding || 'utf8'
+				valueEncoding: encoding || 'utf8'
 			}, function(err, value) {
 				if (err) {
 					console.log(err.message)
@@ -25,7 +25,7 @@ module.exports = {
 		return function set() {
 			var value = encoding ? arguments[0] : collapseArgs(arguments)
 			db.put(name, value, {
-				encoding: encoding || 'utf8'
+				valueEncoding: encoding || 'utf8'
 			}, function(err) {
 				console.log(err || (name + " is now " + value))
 			})
