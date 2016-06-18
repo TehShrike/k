@@ -2,8 +2,9 @@ var level = require('level')
 var path = require('path')
 var ASQ = require('asynquence')
 var collapseArgs = require('./collapse_arguments.js')
+var os = require('os')
 
-var db = level(path.join(process.env.HOME, '.k'))
+var db = level(path.join(os.homedir(), '.k'))
 
 module.exports = {
 	getterFactory: function getterFactory(name, encoding) {
