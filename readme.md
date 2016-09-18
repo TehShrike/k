@@ -1,3 +1,7 @@
+I switched jobs so I'm not using Kanbanize right now.  I would be happy to assist anyone in debugging or adding to this library, and would be willing to hand ownership over to anyone interested.  Open an issue or [ping me on Twitter](https://twitter.com/tehshrike) for either.
+
+# k
+
 A cli for Kanbanize, so I don't have to go use the web UI for frequent operations.
 
 What are my frequent operations, you ask?  Well, let me tell you!
