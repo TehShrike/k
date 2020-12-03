@@ -1,6 +1,5 @@
 var api = require('./kanbanize_api.js')
 var state = require('./state.js')
-var api = require('./kanbanize_api.js')
 var collapseArgs = require('./collapse_arguments.js')
 var Table = require('cli-table')
 

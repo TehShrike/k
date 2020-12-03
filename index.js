@@ -63,7 +63,6 @@ function wrap(text, chars) {
 				trimAt = chars
 			}
 			var shortened = line.substr(0, trimAt)
-			var pickUpAt = line.indexOf
 			line = line.substr(trimAt).trimLeft()
 			shortenedLines.push(shortened)
 		}
@@ -122,7 +121,7 @@ router({
 	},
 	clear: {
 		board: function() {
-			state.db.del('boardColumns')
+			state.remove('boardColumns')
 		}
 	},
 	api: function(apiFunction) {

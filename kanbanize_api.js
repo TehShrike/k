@@ -1,6 +1,5 @@
 var request = require('superagent')
 var resolveUrl = require('url').resolve
-var extend = require('extend')
 var state = require('./state.js')
 
 function resolveAll() {
@@ -19,9 +18,10 @@ module.exports = function makeRequest(apiFunction, body, cb) {
 		request
 			.post(url)
 			.set('apikey', apiKey)
-			.send(extend({
+			.send({
+				...body,
 				textformat: 'plain'
-			}, body))
+			})
 			.end(function(res) {
 				if (res.error) {
 					console.log("ERROR", res.error.message)

@@ -22,12 +22,9 @@
     "k": "./index.js"
   },
   "dependencies": {
-    "level": "~1.3.0",
-    "extend": "~1.2.1",
-    "superagent": "~0.17.0",
-    "cli-table": "~0.3.0",
     "bash-color": "0.0.3",
-    "asynquence": "~0.3.4-e",
-    "lieutenant": "~1.0.1"
+    "cli-table": "~0.3.0",
+    "lieutenant": "~1.0.1",
+    "superagent": "~0.17.0"
   }
 }

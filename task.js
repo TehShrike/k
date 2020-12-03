@@ -1,6 +1,5 @@
 var api = require('./kanbanize_api.js')
 var state = require('./state.js')
-var api = require('./kanbanize_api.js')
 var boardColumns = require('./board_columns.js')
 
 var taskIdGetter = state.getterFactory('taskId')

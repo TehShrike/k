@@ -1,7 +1,7 @@
 var state = require('./state.js')
 var api = require('./kanbanize_api.js')
 
-var columnsSetter = state.setterFactory('boardColumns', 'json')
+const columnsGetter = state.getterFactory('boardColumns')
 var alreadyFetchedBoardsOnceThisRun = false
 
 function getBoardsFromApi(cb) {
@@ -10,7 +10,8 @@ function getBoardsFromApi(cb) {
 			return column.lcname
 		})
 
-		columnsSetter(columns)
+		state.set('boardColumns', columns)
+
 		if (typeof cb === 'function') {
 			cb(columns)
 		}
@@ -18,11 +19,11 @@ function getBoardsFromApi(cb) {
 }
 
 function fetchColumnsIfNecessary(cb) {
-	state.db.get('boardColumns', { valueEncoding: 'json' }, function(err, columns) {
-		if (err && err.notFound) {
-			getBoardsFromApi(cb)
-		} else if (err) {
+	columnsGetter((err, columns) => {
+		if (err) {
 			console.log(err)
+		} else if (!columns) {
+			getBoardsFromApi(cb)
 		} else {
 			cb(columns)
 		}

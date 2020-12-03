@@ -4,6 +4,8 @@ var Table = require('cli-table')
 var color = require('bash-color')
 var boardColumns = require('./board_columns.js')
 
+const taskIdGetter = state.getterFactory('taskId')
+
 function ColumnularTable(headers) {
 	var table = new Table({
 		head: headers
@@ -71,7 +73,7 @@ function displayAllTasks(user, taskId, columnsICareAbout) {
 }
 
 function displayTaskTable(user, columns) {
-	state.db.get('taskId', function(err, taskId) {
+	taskIdGetter(function(err, taskId) {
 		taskId = err ? null : taskId
 
 		if (columns === 'all') {
@@ -92,5 +94,5 @@ module.exports = function() {
 }
 
 module.exports.all = function() {
-	state.fetchAll(['columns'], displayTaskTable.bind(null, 'all'))
+	state.fetchAll(['columns'], columns => displayTaskTable('all', columns))
 }
