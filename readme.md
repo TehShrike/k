@@ -17,9 +17,9 @@ Other people will likely have other workflows than me.  For now, this software r
 
 Install [node.js](http://nodejs.org/download/) if it's not already on your machine, and then run
 
-	sudo npm install -g kanbanize-cli
-
-(you'll obviously want to skip the sudo if you're on Windows)
+```sh
+npm install -g kanbanize-cli
+```
 
 # Set up
 
